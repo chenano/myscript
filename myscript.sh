@@ -52,8 +52,8 @@ select opt in "${options[@]}"; do
         ;;
     "Disable Notification (SIP)")
         echo -e "${RED}Please Enter Your Password To Proceed${NC}"
-        # Since sudo isn't available, this action is likely to be restricted without sufficient privileges.
-        echo -e "${RED}This command requires elevated permissions which may not work without sudo.${NC}"
+        # Without sudo, actions may require direct access to system files which is available in Recovery Mode.
+        echo -e "${RED}This command should be executable in Recovery Mode.${NC}"
         break
         ;;
     "Disable Notification (Recovery)")
@@ -69,8 +69,8 @@ select opt in "${options[@]}"; do
         echo ""
         echo -e "${RED}Please Enter Your Password To Proceed${NC}"
         echo ""
-        # Check if sudo is available (if necessary)
-        echo -e "${RED}This command may fail as it requires elevated permissions.${NC}"
+        # No need for sudo in Recovery Mode.
+        echo -e "${RED}This command should be executable in Recovery Mode.${NC}"
         break
         ;;
     "Exit")
