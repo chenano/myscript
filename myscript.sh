@@ -7,7 +7,7 @@ echo ""
 echo -e "Auto Tools for MacOS"
 echo ""
 PS3='Please enter your choice: '
-options=("Bypass on Recovery" "Disable Notification (SIP)" "Disable Notification (Recovery)" "Check MDM Enrollment" "Thoát")
+options=("Bypass on Recovery" "Disable Notification (SIP)" "Disable Notification (Recovery)" "Check MDM Enrollment" "Exit")
 select opt in "${options[@]}"; do
     case $opt in
     "Bypass on Recovery")
@@ -15,19 +15,19 @@ select opt in "${options[@]}"; do
         if [ -d "/Volumes/Macintosh HD - Data" ]; then
             diskutil rename "Macintosh HD - Data" "Data"
         fi
-        echo -e "${GRN}Tạo người dùng mới"
-        echo -e "${BLU}Nhấn Enter để chuyển bước tiếp theo, có thể không điền sẽ tự động nhận giá trị mặc định"
-        echo -e "Nhập tên người dùng (Mặc định: MAC)"
+        echo -e "${GRN}Create New User"
+        echo -e "${BLU}Press Enter to continue to the next step, you can leave it blank for default values"
+        echo -e "Enter username (Default: MAC)"
         read realName
         realName="${realName:=MAC}"
-        echo -e "${BLUE}Nhận username ${RED}VIẾT LIỀN KHÔNG DẤU ${GRN} (Mặc định: MAC)"
+        echo -e "${BLUE}Enter username (write without spaces, Default: MAC)"
         read username
         username="${username:=MAC}"
-        echo -e "${BLUE}Nhập mật khẩu (mặc định: 1234)"
+        echo -e "${BLUE}Enter password (Default: 1234)"
         read passw
         passw="${passw:=1234}"
         dscl_path='/Volumes/Data/private/var/db/dslocal/nodes/Default'
-        echo -e "${GREEN}Đang tạo user"
+        echo -e "${GREEN}Creating user"
         # Create user
         dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username"
         dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username" UserShell "/bin/zsh"
@@ -41,7 +41,7 @@ select opt in "${options[@]}"; do
         echo "0.0.0.0 deviceenrollment.apple.com" >> /Volumes/Macintosh\ HD/etc/hosts
         echo "0.0.0.0 mdmenrollment.apple.com" >> /Volumes/Macintosh\ HD/etc/hosts
         echo "0.0.0.0 iprofiles.apple.com" >> /Volumes/Macintosh\ HD/etc/hosts
-        echo -e "${GREEN}Chặn host thành công${NC}"
+        echo -e "${GREEN}Host blocked successfully${NC}"
         touch /Volumes/Data/private/var/db/.AppleSetupDone
         rm -rf /Volumes/Macintosh\ HD/var/db/ConfigurationProfiles/Settings/.cloudConfigHasActivationRecord
         rm -rf /Volumes/Macintosh\ HD/var/db/ConfigurationProfiles/Settings/.cloudConfigRecordFound
@@ -51,16 +51,9 @@ select opt in "${options[@]}"; do
         break
         ;;
     "Disable Notification (SIP)")
-        echo -e "${RED}Please Insert Your Password To Proceed${NC}"
-        # Check if sudo is available, Sonoma may have restricted it.
-        if ! command -v sudo &> /dev/null; then
-            echo -e "${RED}Sudo not found. This may cause the script to fail.${NC}"
-        else
-            sudo rm /var/db/ConfigurationProfiles/Settings/.cloudConfigHasActivationRecord
-            sudo rm /var/db/ConfigurationProfiles/Settings/.cloudConfigRecordFound
-            sudo touch /var/db/ConfigurationProfiles/Settings/.cloudConfigProfileInstalled
-            sudo touch /var/db/ConfigurationProfiles/Settings/.cloudConfigRecordNotFound
-        fi
+        echo -e "${RED}Please Enter Your Password To Proceed${NC}"
+        # Since sudo isn't available, this action is likely to be restricted without sufficient privileges.
+        echo -e "${RED}This command requires elevated permissions which may not work without sudo.${NC}"
         break
         ;;
     "Disable Notification (Recovery)")
@@ -74,16 +67,13 @@ select opt in "${options[@]}"; do
         echo ""
         echo -e "${GRN}Check MDM Enrollment. Error is success${NC}"
         echo ""
-        echo -e "${RED}Please Insert Your Password To Proceed${NC}"
+        echo -e "${RED}Please Enter Your Password To Proceed${NC}"
         echo ""
-        if ! command -v sudo &> /dev/null; then
-            echo -e "${RED}Sudo not found. This may cause the script to fail.${NC}"
-        else
-            sudo profiles show -type enrollment
-        fi
+        # Check if sudo is available (if necessary)
+        echo -e "${RED}This command may fail as it requires elevated permissions.${NC}"
         break
         ;;
-    "Quit")
+    "Exit")
         break
         ;;
     *) echo "Invalid option $REPLY" ;;
