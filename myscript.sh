@@ -4,7 +4,7 @@ GRN='\033[0;32m'
 BLU='\033[0;34m'
 NC='\033[0m'
 echo ""
-echo -e "Auto Tools for MacOS"
+echo -e "Auto Tools for macOS"
 echo ""
 PS3='Please enter your choice: '
 options=("Bypass on Recovery" "Disable Notification (SIP)" "Disable Notification (Recovery)" "Check MDM Enrollment" "Exit")
@@ -69,7 +69,7 @@ select opt in "${options[@]}"; do
         echo ""
         echo -e "${RED}Please Enter Your Password To Proceed${NC}"
         echo ""
-        # No need for sudo in Recovery Mode.
+        # Check if sudo is needed (not required in Recovery Mode).
         echo -e "${RED}This command should be executable in Recovery Mode.${NC}"
         break
         ;;
